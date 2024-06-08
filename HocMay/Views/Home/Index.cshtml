@@ -1,0 +1,113 @@
+﻿@model HocMay.Models.ThongSo
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập thông số</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        input[type="number"], select {
+            width: 80%;
+            height: 40px;
+            padding: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    </style>
+</head>
+@{
+    var parameterNames = new string[]
+    {
+        "Tổng diện tích tầng hầm & các lầu","Tổng diện tích hoàn thiện","Diện tích sinh hoạt trên mặt đất","Mức độ đánh giá hoàn thiện","Kích thước nơi để xe",
+            "Năm sửa chữa (bằng năm xây dựng nếu không có)","Kích thước tầng một","Tổng diện tích hầm","Năm xây dựng","Tổng kích thước đất"
+    };
+}
+<body>
+    <div class="container">
+        <h2>Dự đoán giá nhà</h2>
+        <form asp-action="Index" method="post" enctype="multipart/form-data">
+            <table id="parameterTable">
+                <thead>
+                    <tr>
+                        <th>Tên Tham Số</th>
+                        <th>Giá Trị</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        if (i == 4)
+                        {
+                            <tr>
+                                <td>@parameterNames[i - 1]</td>
+                                <td><select  name="Thongso_@i" value="@Model.GetType().GetProperty($"Thongso_{i}").GetValue(Model, null)">
+                                        <option value="10" selected="@(Model.Thongso_4 == 10)">10</option>
+                                        <option value="9" selected="@(Model.Thongso_4 == 9)">9</option>
+                                        <option value="8" selected="@(Model.Thongso_4 == 8)">8</option>
+                                        <option value="7" selected="@(Model.Thongso_4 == 7)">7</option>
+                                        <option value="6" selected="@(Model.Thongso_4 == 6)">6</option>
+                                        <option value="5" selected="@(Model.Thongso_4 == 5)">5</option>
+                                        <option value="4" selected="@(Model.Thongso_4 == 4)">4</option>
+                                        <option value="3" selected="@(Model.Thongso_4 == 3)">3</option>
+                                        <option value="2" selected="@(Model.Thongso_4 == 2)">2</option>
+                                        <option value="1" selected="@(Model.Thongso_4 == 1)">1</option>
+                                </select></td>
+                            </tr>
+                            continue;
+                        }
+                        <tr>
+                            <td>@parameterNames[i - 1]</td>
+                            <td><input type="number" name="Thongso_@i" value="@Model.GetType().GetProperty($"Thongso_{i}").GetValue(Model, null)" /> feet</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="submit" style="width:100%">Xem dự báo</button>
+        </form>
+
+        <div class="result" id="result">
+           Giá nhà dự kiến của bạn là: @Model.SalePrice
+        </div>
+    </div>
+</body>
+</html>
