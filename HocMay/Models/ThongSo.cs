@@ -13,7 +13,7 @@
         public float Thongso_9 { get; set; }
         public float Thongso_10 { get; set; }
         public string SalePrice { get; set; }
-        
+
 
     }
 }
