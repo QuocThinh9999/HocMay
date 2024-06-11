@@ -46,7 +46,7 @@
         }
 
         input[type="number"], select {
-            width: 80%;
+            width: 100%;
             height: 40px;
             padding: 8px;
             box-sizing: border-box;
@@ -57,8 +57,8 @@
 @{
     var parameterNames = new string[]
     {
-        "OverallQual","GrLivArea","GarageCar","GarageArea","FullBath",
-    "YearBuilt","YearRemodAdd","BsmtQual","TotalBsmtSF","ExterQual"
+        "OverallQual (Đánh giá vật liệu tổng thể và độ hoàn thiện của ngôi nhà)","GrLivArea (Diện tích sống trên cao (mặt đất) feet vuông)","GarageCars (Kích thước gara tính theo sức chứa ô tô)","GarageArea (Kích thước của nhà để xe tính bằng feet vuông)","FullBath (Phòng tắm)",
+    "YearBuilt (Năm xây dựng)","YearRemodAdd (Năm sửa chữa (bằng năm xây dựng nếu không sửa chữa))","BsmtQual (Chiều cao tầng hầm)","TotalBsmtSF (Tổng diện tích tầng hầm)","ExterQual (Đánh giá chất lượng bên ngoài của vật liệu)"
     };
 }
 <body>
@@ -79,24 +79,52 @@
                             <select name="Thongso_1" value="@Model.Thongso_1">
                                 <option value="10" selected="@(Model.Thongso_1 == 10)">10</option>
                                 <option value="9" selected="@(Model.Thongso_1 == 9)">9</option>
-                                <option value="8" selected="@(Model.Thongso_4 == 8)">8</option>
-                                <option value="7" selected="@(Model.Thongso_4 == 7)">7</option>
-                                <option value="6" selected="@(Model.Thongso_4 == 6)">6</option>
-                                <option value="5" selected="@(Model.Thongso_4 == 5)">5</option>
-                                <option value="4" selected="@(Model.Thongso_4 == 4)">4</option>
-                                <option value="3" selected="@(Model.Thongso_4 == 3)">3</option>
-                                <option value="2" selected="@(Model.Thongso_4 == 2)">2</option>
-                                <option value="1" selected="@(Model.Thongso_4 == 1)">1</option>
+                                <option value="8" selected="@(Model.Thongso_1 == 8)">8</option>
+                                <option value="7" selected="@(Model.Thongso_1 == 7)">7</option>
+                                <option value="6" selected="@(Model.Thongso_1 == 6)">6</option>
+                                <option value="5" selected="@(Model.Thongso_1 == 5)">5</option>
+                                <option value="4" selected="@(Model.Thongso_1 == 4)">4</option>
+                                <option value="3" selected="@(Model.Thongso_1 == 3)">3</option>
+                                <option value="2" selected="@(Model.Thongso_1 == 2)">2</option>
+                                <option value="1" selected="@(Model.Thongso_1 == 1)">1</option>
                             </select>
                         </td>
                     </tr>
                     @for (int i = 2; i <= 10; i++)
                     {
+                        if (i == 3 || i == 5 || i == 8 || i == 10)
+                        {
+                            <tr>
+                                <td>@parameterNames[i-1]</td>
+                                <td>
+                                    <select name="Thongso_@i">
+                                        @{
+                                            var thongsoValue = Model.GetType().GetProperty($"Thongso_{i}").GetValue(Model, null);
+                                        }
+                                        <option value="5" selected="@(thongsoValue != null && thongsoValue.ToString() == "5")">5</option>
+                                        <option value="4" selected="@(thongsoValue != null && thongsoValue.ToString() == "4")">4</option>
+                                        <option value="3" selected="@(thongsoValue != null && thongsoValue.ToString() == "3")">3</option>
+                                        <option value="2" selected="@(thongsoValue != null && thongsoValue.ToString() == "2")">2</option>
+                                        <option value="1" selected="@(thongsoValue != null && thongsoValue.ToString() == "1")">1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            continue;
+                        }
                         <tr>
                             <td>@parameterNames[i - 1]</td>
-                            <td><input type="number" name="Thongso_@i" value="@Model.GetType().GetProperty($"Thongso_{i}").GetValue(Model, null)" /> feet</td>
+                            <td><input type="number" name="Thongso_@i" value="@Model.GetType().GetProperty($"Thongso_{i}").GetValue(Model, null)" /></td>
                         </tr>
                     }
+                    <tr>
+                        <td>Chọn model</td>
+                        <td>
+                            <select name="model" value="@Model.model">
+                                <option value="0" selected="@(Model.model == 0)">Chạy trên model 10 (đề nghị)</option>
+                                <option value="1" selected="@(Model.model == 1)">Chạy trên model 79</option>
+                            </select>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <button type="submit" style="width:100%">Xem dự báo</button>
